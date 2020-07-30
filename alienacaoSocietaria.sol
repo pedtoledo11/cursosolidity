@@ -49,4 +49,14 @@ contract alienacaoSocietaria {
         require (_acoesAlienadas <= listaDeAcionistas[_paramVendedor].numeroDeAcoes);
         listaDeAlienacoes.push(alienacao(listaDeAcionistas[_paramVendedor].acionistaWallet, listaDeAcionistas[_paramComprador].acionistaWallet, _acoesAlienadas, _acoesAlienadas*numeroDeAcoes, _prazoParaAOperacao, 0 ));
     }
+        function pagarAlienacao(uint256 _paramAlienacao, uint256 _paramVendedor, uint256 _paramComprador) public payable {
+        require (msg.sender == listaDeAlienacoes[_paramAlienacao].compradorWallet);
+        require (block.timestamp <= listaDeAlienacoes[_paramAlienacao].prazoParaAOperacao);
+        require (msg.value == listaDeAlienacoes[_paramAlienacao].valorDaOperacao);
+        listaDeAcionistas[_paramVendedor].numeroDeAcoes -= listaDeAlienacoes[_paramAlienacao].quantidadeDeAcoes;
+        listaDeAcionistas[_paramComprador].numeroDeAcoes += listaDeAlienacoes[_paramAlienacao].quantidadeDeAcoes;
+        listaDeAlienacoes[_paramAlienacao].vendedorWallet.transfer(msg.value);
+        listaDeAlienacoes[_paramAlienacao].dataDaOperacao = block.timestamp;
+    }
+}
 }
