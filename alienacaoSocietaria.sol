@@ -59,4 +59,3 @@ contract alienacaoSocietaria {
         listaDeAlienacoes[_paramAlienacao].dataDaOperacao = block.timestamp;
     }
 }
-}
